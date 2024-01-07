@@ -22,12 +22,12 @@ from src.dataloading.load_datasets import (CustomTextCollator,
                                            )
 from src.training.single_fold import train_fold
 
-# Seed Everything
-SEED = 42
-seed_everything(seed=SEED)
+# Seed Everything, set seed for reproduction
+#
+#
 
-# Get Device type for processing
-DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# Get Device type for processing, if cuda is available use cuda, otherwise use cpu
+#DEVICE = 
 
 
 def workflow():
@@ -36,21 +36,21 @@ def workflow():
     """
 
     # Load Data from Disk
-    load_data_file = LoadData(base_dir=CFG.paths.data.base_dir)
-    if CFG.debug:
-        data = load_data_file.load(filename=CFG.paths.data.debug_data)
+    #load_data_file = base_dir=CFG.paths.data.base_dir
+    #if
+    #    filename=CFG.paths.data.debug_data
     else:
-        data = load_data_file.load(filename=CFG.paths.data.data)
+    #    filename=CFG.paths.data.data
 
-    # Stratify the Data
-    data = (StratifyData(technique=CFG.stratify.technique,
+    # Stratify the Data, the act of sorting data distinct groups or layers.
+    data = (#(technique=CFG.stratify.technique,
                          n_folds=CFG.cv.num_folds,
                          target=CFG.data_info.target)
             .stratify(df=data))
 
     # Train a model for each validation fold
-    for fold_num in CFG.cv.val_folds:
-    # fold_num = CFG.cv.val_folds[0]
+    for # in CFG.cv.val_folds:
+
 
         print((f'''
             # ====================================================
