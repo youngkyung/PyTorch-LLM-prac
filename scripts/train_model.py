@@ -59,7 +59,9 @@ def workflow():
             '''))
 
         # Split Data into Training and Validation
-        df_train = data.copy()[data.fold != fold_num].reset_index(drop=True)
+        # https://www.youtube.com/watch?v=zVDDITt4XEA
+        # (maybe for cross-validation) copy data if data.fold is not same with fold_num and reset index with drop=True
+        df_train = #
         df_val = data.copy()[data.fold == fold_num].reset_index(drop=True)
         print(f'Train Number of Instances: {len(df_train):,}')
         print(f'Validation Number of Instances: {len(df_val):,}')
@@ -69,19 +71,20 @@ def workflow():
         for technique in CFG.preprocessing.apply_techniques:
             fields = getattr(CFG.preprocessing, technique).fields
             for col in fields:
-                enc = PreprocessData(y=df_train[col].values,
+                enc = PreprocessData(y=#,
                                      technique=technique)
                 encoders[col] = {'encoder': enc.encoder,
                                 'technique': technique}
 
         # Path to the model and tokenizer model card saved on disk
-        model_path = Path(CFG.model_tokenizer.base_dir) / CFG.model_tokenizer.name
+        # Concatenate model_tokenizer.base_dir with model_tokneizer.name
+        model_path = Path(CFG.model_tokenizer.base_dir) / #
 
-        # Load the tokenizer
-        tokenizer = AutoTokenizer.from_pretrained(model_path, do_lower=True)
+        # Load the #
+        # = AutoTokenizer.from_pretrained(model_path, do_lower=True)
 
-        # Collator
-        collator = CustomTextCollator(tokenizer=tokenizer,
+        # Load #
+        # = CustomTextCollator(tokenizer=tokenizer,
                                       tokenizer_cfg=CFG.tokenizer)
 
         # Train Dataset and Dataloader
