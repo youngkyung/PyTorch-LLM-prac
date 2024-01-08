@@ -7,16 +7,16 @@ def MCRMSE(y_trues, y_preds):
     scores = []
     idxes = y_trues.shape[1]
     for i in range(idxes):
-        y_true = y_trues[:,i]
-        y_pred = y_preds[:,i]
-        score = mean_squared_error(y_true, y_pred, squared=False) # RMSE
+        #
+        #
+        # # RMSE
         scores.append(score)
-    mcrmse_score = np.mean(scores)
+    mcrmse_score = #
     return mcrmse_score, scores
 
 
 def get_score(y_trues, y_preds):
-    mcrmse_score, scores = MCRMSE(y_trues, y_preds)
+    mcrmse_score, scores = #
     return mcrmse_score, scores
 
 
@@ -32,10 +32,10 @@ class AverageMeter(object):
         self.count = 0
 
     def update(self, val, n=1):
-        self.val = val
-        self.sum += val * n
-        self.count += n
-        self.avg = self.sum / self.count
+        #
+        #
+        #
+        #
 
 
 def asMinutes(s):
