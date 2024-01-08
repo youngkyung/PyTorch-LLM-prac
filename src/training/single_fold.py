@@ -34,29 +34,29 @@ def train_fold(train_dl,
     model_path = Path(cfg.model_tokenizer.base_dir) / cfg.model_tokenizer.name
 
     # Load custom model
-    model = CustomModel(llm_model_path=model_path,
-                        cfg=cfg.model,
-                        num_classes=n_classes)
+    model = CustomModel(#,
+                        #,
+                        #)
     # Set model on device
-    model.to(device)
+    #
 
     # Optimizer
-    optimizer = get_optimizer(cfg=cfg.optimizer,
-                              model=model)
+    optimizer = get_optimizer(#,
+                              #)
 
     # Total number of steps/iterations
-    total_steps = cfg.epochs * len(train_dl)
+    total_steps = #
 
     # Learning Rate Scheduler
-    scheduler = CosineAnnealingLR(optimizer,
-                                  T_max=total_steps,
+    scheduler = CosineAnnealingLR(#,
+                                  #,
                                   eta_min=(cfg
                                            .lr_scheduler
                                            .CosineAnnealingLR.eta_min))
 
     # Batch size
-    batch_size = cfg.batch_size
-
+    #
+                 
     # #Compute the class weights
     # train_labels = encoders['Product']['encoder'].transform(df_train['Product'])
     # class_wts = compute_class_weight('balanced',
@@ -68,8 +68,8 @@ def train_fold(train_dl,
     # weights = weights.to(DEVICE)
     # #the weights can be provided to CrossEntropyLoss to help with imbalance
 
-    # Loss Function
-    loss_fn = nn.CrossEntropyLoss()
+    # Loss Function (crossentropy)
+    #
 
     # Performance metrics
     f1 = MulticlassF1Score(num_classes=n_classes).to(device)
@@ -109,47 +109,47 @@ def train_fold(train_dl,
         # Iterate over each batch in an epoch
         # for idx, batch in enumerate(train_dataloader): [if you don't want a progress bar]
         with tqdm(train_dl, unit='batch') as tepoch:
-            for idx, batch in enumerate(tepoch):
+            for idx, batch in #:
                 tepoch.set_description(f"Epoch {epoch + 1}")
-                X = {'input_ids': batch['input_ids'].to(device),
-                    'attention_mask': batch['attention_mask'].to(device)}
-                y = batch['labels'].to(device)
+                X = {'input_ids': #,
+                    'attention_mask': #}
+                y = #
 
                 # Model prediction
                 optimizer.zero_grad()
-                y_pred_logits = model(X)
-                y_pred = nn.Softmax(dim=1)(y_pred_logits).argmax(1)
+                y_pred_logits = #
+                y_pred = #
 
                 # Calculate loss
-                loss = loss_fn(input=y_pred_logits, target=y)
+                loss = #
 
                 # Backward pass, optimizer & scheduler steps
-                loss.backward()
-                optimizer.step()
-                scheduler.step()
+                #
+                #
+                #
 
                 # Performance metrics for the batch of data
-                f1_score = f1(y_pred, y)
-                precision_score = precision(y_pred, y)
-                recall_score = recall(y_pred, y)
+                f1_score = #
+                precision_score = #
+                recall_score = #
 
                 # Store loss and performance metrics
-                train_meters['loss'].update(loss.detach().cpu().numpy(),
+                train_meters['#'].update(#.detach().cpu().numpy(),
                                             n=batch_size)
-                train_meters['f1'].update(f1_score.detach().cpu().numpy(),
+                train_meters['#'].update(#.detach().cpu().numpy(),
                                           n=batch_size)
-                train_meters['precision'].update(precision_score.detach().cpu().numpy(),
+                train_meters['#'].update(#.detach().cpu().numpy(),
                                                  n=batch_size)
-                train_meters['recall'].update(recall_score.detach().cpu().numpy(),
+                train_meters['#'].update(#.detach().cpu().numpy(),
                                               n=batch_size)
 
                 # Print at every N steps
                 if step_count % 10 == 0:
                     # Extract training metrics by step count
-                    train_loss = train_meters["loss"].avg
-                    train_f1 = train_meters["f1"].avg
-                    train_precision = train_meters["precision"].avg
-                    train_recall = train_meters["recall"].avg
+                    train_loss = #
+                    train_f1 = #
+                    train_precision = #
+                    train_recall = #
 
                     # Print Metrics to progress bar
                     tepoch.set_postfix(loss=f'{train_loss:.4f}',
