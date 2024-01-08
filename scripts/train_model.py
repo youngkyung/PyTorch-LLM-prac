@@ -66,7 +66,7 @@ def workflow():
         print(f'Train Number of Instances: {len(df_train):,}')
         print(f'Validation Number of Instances: {len(df_val):,}')
 
-        # Preprocessing Encoders
+        # Preprocessing #
         encoders = {}
         for technique in CFG.preprocessing.apply_techniques:
             fields = getattr(CFG.preprocessing, technique).fields
@@ -89,18 +89,18 @@ def workflow():
 
         # Train Dataset and Dataloader
         (_,
-        train_dataloader) = get_ds_dl(df=df_train,
-                                      cfg=CFG,
-                                      tokenizer=tokenizer,
-                                      encoder=encoders[CFG.data_info.target]['encoder'],
-                                      collator=collator)
+        train_dataloader) = get_ds_dl(df=#,
+                                      cfg=#,
+                                      tokenizer=#,
+                                      encoder=#,
+                                      collator=#)
         # Validation Dataset and Dataloader
         (_,
-        val_dataloader) = get_ds_dl(df=df_val,
-                                    cfg=CFG,
-                                    tokenizer=tokenizer,
-                                    encoder=encoders[CFG.data_info.target]['encoder'],
-                                    collator=collator)
+        val_dataloader) = get_ds_dl(df=#,
+                                    cfg=#,
+                                    tokenizer=#,
+                                    encoder=#,
+                                    collator=#)
 
         print(f'# of Training Samples: {len(df_train):,}')
         print(f'# of Validation Samples: {len(df_val):,}')
@@ -113,12 +113,12 @@ def workflow():
         model_save_path = getattr(run_ids.folds_id, f'fold{fold_num}').path
 
         # Training for a single fold
-        perf_metrics = train_fold(train_dl=train_dataloader,
-                                  val_dl=val_dataloader,
-                                  cfg=CFG,
-                                  device=DEVICE,
-                                  n_classes=df_train[CFG.data_info.target].nunique(),
-                                  model_save_path=model_save_path)
+        perf_metrics = train_fold(train_dl=#,
+                                  val_dl=#,
+                                  cfg=#,
+                                  device=#,
+                                  n_classes=#,
+                                  model_save_path=#)
 
         # Save plots of performance metrics to disk for visual assessment
         if CFG.paths.save_results.apply_metric:
@@ -143,11 +143,11 @@ if __name__ == '__main__':
 
     # Determine if running in debug mode
     # If in debug manually point to CFG file
-    is_debugger = debugger_is_active()
+    is_debugger = #debugger_is_active()
 
     # Construct the argument parser and parse the arguments
     if is_debugger:
-        args = argparse.Namespace()
+        args = #
         args.dir = './cfgs'
         args.name = 'train-1-debug.yaml'
     else:
@@ -170,14 +170,16 @@ if __name__ == '__main__':
                    filename=args.name)
 
     # Create directories for saving results and use unique Group ID
-    run_ids = RunIDs(test_folds=CFG.cv.val_folds,
-                     num_folds=CFG.cv.num_folds,
-                     save_dir=CFG.paths.save_results.base_dir,
-                     save_results=CFG.paths.save_results.apply_metric)
-    run_ids.generate_run_ids()
+    run_ids = RunIDs(test_folds=#,
+                     num_folds=#,
+                     save_dir=#,
+                     save_results=#)
 
+    #generate run ids
+    #
+  
     # Start the training workflow
-    workflow()
+    #
 
     print('PYTHON SCRIPT COMPLETED - END')
     
