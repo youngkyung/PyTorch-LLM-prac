@@ -6,7 +6,7 @@ from transformers import AutoTokenizer
 import torch
 
 # Append Path to Custom Modules if Needed
-# sys.path.append('./')
+sys.path.append('./')
 
 # Custom Modules
 from src.utils import (seed_everything,
@@ -23,11 +23,11 @@ from src.dataloading.load_datasets import (CustomTextCollator,
 from src.training.single_fold import train_fold
 
 # Seed Everything, set seed for reproduction
-#
+seed=777
 #
 
 # Get Device type for processing, if cuda is available use cuda, otherwise use cpu
-#DEVICE = 
+DEVICE = torch.device('cuda')
 
 
 def workflow():
@@ -36,20 +36,20 @@ def workflow():
     """
 
     # Load Data from Disk
-    load_data_file = #(base_dir=CFG.paths.data.base_dir)
-    #if
-    #    filename=CFG.paths.data.debug_data
+    load_data_file = load_data(base_dir=CFG.paths.data.base_dir)
+    if
+       filename=load_data_file.load(CFG.paths.data.debug_data)
     else:
-    #    filename=CFG.paths.data.data
+       filename=load_data_file.load(CFG.paths.data.data)
 
     # Stratify the Data, the act of sorting data distinct groups or layers.
-    data = (#(technique=CFG.stratify.technique,
+    data = (sort(technique=CFG.stratify.technique,
                          n_folds=CFG.cv.num_folds,
                          target=CFG.data_info.target)
             .stratify(df=data))
 
     # Train a model for each validation fold
-    for # in CFG.cv.val_folds:
+    for fold_num in CFG.cv.val_folds:
 
 
         print((f'''
@@ -61,7 +61,7 @@ def workflow():
         # Split Data into Training and Validation
         # https://www.youtube.com/watch?v=zVDDITt4XEA
         # (maybe for cross-validation) copy data if data.fold is not same with fold_num and reset index with drop=True
-        df_train = #
+        df_train = data.copy()[data.fold =! fold_num].reset_index(drop=True)
         df_val = data.copy()[data.fold == fold_num].reset_index(drop=True)
         print(f'Train Number of Instances: {len(df_train):,}')
         print(f'Validation Number of Instances: {len(df_val):,}')
@@ -78,29 +78,29 @@ def workflow():
 
         # Path to the model and tokenizer model card saved on disk
         # Concatenate model_tokenizer.base_dir with model_tokneizer.name
-        model_path = Path(CFG.model_tokenizer.base_dir) / #
+        model_path = Path(CFG.model_tokenizer.base_dir) / model_tokenizer.name
 
-        # Load the #
-        # = AutoTokenizer.from_pretrained(model_path, do_lower=True)
+        # Load the tokenizer
+        tokenizer = AutoTokenizer.from_pretrained(model_path, do_lower=True)
 
-        # Load #
-        # = CustomTextCollator(tokenizer=tokenizer,
+        # Load text data
+        collator = CustomTextCollator(tokenizer=tokenizer,
                                       tokenizer_cfg=CFG.tokenizer)
 
         # Train Dataset and Dataloader
         (_,
-        train_dataloader) = get_ds_dl(df=#,
-                                      cfg=#,
-                                      tokenizer=#,
+        train_dataloader) = get_ds_dl(df=df_train,
+                                      cfg=CFG,
+                                      tokenizer=tokenizer,
                                       encoder=#,
-                                      collator=#)
+                                      collator=collator)
         # Validation Dataset and Dataloader
         (_,
-        val_dataloader) = get_ds_dl(df=#,
-                                    cfg=#,
-                                    tokenizer=#,
+        val_dataloader) = get_ds_dl(df=df_val,
+                                    cfg=CFG,
+                                    tokenizer=tokenizer,
                                     encoder=#,
-                                    collator=#)
+                                    collator=collator)
 
         print(f'# of Training Samples: {len(df_train):,}')
         print(f'# of Validation Samples: {len(df_val):,}')
@@ -143,7 +143,7 @@ if __name__ == '__main__':
 
     # Determine if running in debug mode
     # If in debug manually point to CFG file
-    is_debugger = #debugger_is_active()
+    is_debugger = CFG.debugger_is_active()
 
     # Construct the argument parser and parse the arguments
     if is_debugger:
