@@ -113,12 +113,12 @@ def workflow():
         model_save_path = getattr(run_ids.folds_id, f'fold{fold_num}').path
 
         # Training for a single fold
-        perf_metrics = train_fold(train_dl=#,
-                                  val_dl=#,
-                                  cfg=#,
-                                  device=#,
+        perf_metrics = train_fold(train_dl=train_dataloader,
+                                  val_dl=val_dataloader,
+                                  cfg=CFG,
+                                  device=torch.device('cuda'),
                                   n_classes=#,
-                                  model_save_path=#)
+                                  model_save_path=model_save_path)
 
         # Save plots of performance metrics to disk for visual assessment
         if CFG.paths.save_results.apply_metric:
@@ -147,7 +147,7 @@ if __name__ == '__main__':
 
     # Construct the argument parser and parse the arguments
     if is_debugger:
-        args = #
+        args = argparse.Namespace()
         args.dir = './cfgs'
         args.name = 'train-1-debug.yaml'
     else:
@@ -170,7 +170,7 @@ if __name__ == '__main__':
                    filename=args.name)
 
     # Create directories for saving results and use unique Group ID
-    run_ids = RunIDs(test_folds=#,
+    run_ids = RunIDs(test_folds=,
                      num_folds=#,
                      save_dir=#,
                      save_results=#)
